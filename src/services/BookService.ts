@@ -11,6 +11,7 @@ export default class BookService {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(response.data);
     return response.data;
   }
 
@@ -23,6 +24,7 @@ export default class BookService {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(response.data);
     return response.data;
   }
 
