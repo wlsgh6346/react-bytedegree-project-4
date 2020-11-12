@@ -1,7 +1,7 @@
-import {BookReqType, BookResType} from '../../types';
+import {BookReqType, BookResType, EditReqType} from '../../types';
 import {ActionType, createAsyncAction, createReducer} from "typesafe-actions";
 import { AxiosError } from "axios";
-import {call, put, select, takeEvery} from 'redux-saga/effects';
+import {call, put, select, takeEvery, takeLatest} from 'redux-saga/effects';
 import { deprecated } from 'typesafe-actions';
 import BookService from "../../services/BookService";
 import {getBooksFromState, getTokenFromState} from "../utils";
@@ -40,7 +40,7 @@ export const booksAsync = createAsyncAction(
 
 export const getBooksList = createStandardAction(GET_BOOKS_LIST)();
 export const addBook = createStandardAction(ADD_BOOK)<BookReqType>();
-export const editBook = createStandardAction(EDIT_BOOK)<BookReqType>();
+export const editBook = createStandardAction(EDIT_BOOK)<EditReqType>();
 export const removeBook = createStandardAction(REMOVE_BOOK)<number>();
 
 const actions = { booksAsync, getBooksList, addBook, editBook, removeBook };
@@ -87,13 +87,18 @@ function* addBookSaga(action: ReturnType<typeof addBook>) {
     yield put(booksAsync.request());
 
     const token: string = yield select(getTokenFromState);
-    const booksList: BookResType[] = yield select(getBooksFromState);
+    const booksList: BookResType[] | null = yield select(getBooksFromState);
     const addBook: BookResType = yield call(BookService.addBook, token, action.payload);
 
-    yield put(booksAsync.success([...booksList, addBook]));
+
+    if(booksList === null)
+      yield put(booksAsync.success([addBook]));
+    else
+      yield put(booksAsync.success([...booksList, addBook]));
     yield put(push('/'));
   }
   catch (error) {
+    console.log(error)
     yield put(fail(new Error(error?.response?.data?.error || 'ADD_BOOK_ERROR')));
   }
 }
@@ -108,7 +113,7 @@ function* editBookSaga(action: ReturnType<typeof editBook>) {
     const editBook: BookResType = yield call(BookService.editBook,
         token,
         action.payload.bookId,
-        action.payload
+        action.payload.bookReq
     );
 
     const editedBooksList = booksList.map(book =>
@@ -119,6 +124,7 @@ function* editBookSaga(action: ReturnType<typeof editBook>) {
     yield put(push('/'));
   }
   catch (error) {
+
     yield put(fail(new Error(error?.response?.data?.error || 'EDIT_BOOK_ERROR')));
   }
 }
@@ -147,7 +153,7 @@ function* removeBookSaga(action: ReturnType<typeof removeBook>) {
 // [project] saga 함수를 실행하는 액션과 액션 생성 함수를 작성했다.
 export function* sagas() {
   yield takeEvery(getBooksList, getBooksListSaga);
-  yield takeEvery(addBook, addBookSaga);
+  yield takeLatest(addBook, addBookSaga);
   yield takeEvery(editBook, editBookSaga);
   yield takeEvery(removeBook, removeBookSaga);
 }

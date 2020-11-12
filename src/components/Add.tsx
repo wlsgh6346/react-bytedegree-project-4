@@ -5,19 +5,20 @@ import { FormOutlined } from '@ant-design/icons';
 
 import Layout from './Layout';
 import styles from './Add.module.css';
+import {BookReqType} from "../types";
 
 interface AddProps {
   loading: boolean;
   logout: () => void;
+  onSubmitBook: (addBookData: BookReqType) => void;
 }
 
 // [project] 컨테이너에 작성된 함수를 컴포넌트에서 이용했다.
-const Add: React.FC<AddProps> = ({ loading, logout }) => {
+const Add: React.FC<AddProps> = ({ loading, logout, onSubmitBook }) => {
   const titleRef = React.useRef<Input>(null);
   const messageRef = React.useRef<TextArea>(null);
   const authorRef = React.useRef<Input>(null);
   const urlRef = React.useRef<Input>(null);
-
   return (
     <Layout>
       <PageHeader
@@ -98,7 +99,6 @@ const Add: React.FC<AddProps> = ({ loading, logout }) => {
     const message = messageRef.current!.state.value;
     const author = authorRef.current!.state.value;
     const url = urlRef.current!.state.value;
-
     if (
       title === undefined ||
       message === undefined ||
@@ -108,6 +108,7 @@ const Add: React.FC<AddProps> = ({ loading, logout }) => {
       messageDialog.error('Please fill out all inputs');
       return;
     }
+    onSubmitBook({title, message, author, url});
   }
 };
 export default Add;
