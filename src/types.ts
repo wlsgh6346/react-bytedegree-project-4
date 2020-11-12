@@ -1,4 +1,5 @@
 export interface BookReqType {
+  bookId: number;
   title: string;
   author: string;
   message: string;
