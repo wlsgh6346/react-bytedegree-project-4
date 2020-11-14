@@ -10,12 +10,17 @@ interface BooksProps {
   books: BookResType[] | null;
   loading: boolean;
   goAdd: () => void;
+  editBook: (bookId: number) => void;
+  detailBook: (bookId: number) => void;
+  removeBook: (bookId: number) => void;
   logout: () => void;
 }
 
 // [project] 컨테이너에 작성된 함수를 컴포넌트에서 이용했다.
 // [project] BookResType 의 응답 값을 이용하여, List 컴포넌트의 키를 처리했다.
-const Books: React.FC<BooksProps> = ({ books, loading, goAdd, logout }) => {
+const Books: React.FC<BooksProps> = ({ books, loading, goAdd,
+                                         editBook, detailBook,
+                                         removeBook, logout }) => {
   return (
     <Layout>
       <PageHeader
@@ -48,7 +53,16 @@ const Books: React.FC<BooksProps> = ({ books, loading, goAdd, logout }) => {
             dataIndex: 'book',
             key: 'book',
             render: (text, record) => (
-              <Book {...record} key={'{record.bookId}'} />
+              <Book {...record}
+                    title={record.title}
+                    url={record.url}
+                    author={record.author}
+                    bookId={record.bookId}
+                    createdAt={record.createdAt}
+                    removeBook={() => removeBook(record.bookId)}
+                    editBook={editBook}
+                    detailBook={detailBook}
+                    key={'{record.bookId}'} />
             ),
           },
         ]}

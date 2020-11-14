@@ -95,6 +95,7 @@ function* addBookSaga(action: ReturnType<typeof addBook>) {
       yield put(booksAsync.success([addBook]));
     else
       yield put(booksAsync.success([...booksList, addBook]));
+
     yield put(push('/'));
   }
   catch (error) {

@@ -31,3 +31,7 @@ export interface EditReqType {
   bookId: number;
   bookReq: BookReqType;
 }
+
+export interface ExtendBookReqType extends BookReqType {
+  bookId: number;
+}
