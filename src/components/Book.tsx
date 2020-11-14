@@ -60,7 +60,8 @@ const Book: React.FC<BookProps> = ({
             shape={"circle"}
             className={styles.button_edit}
             size={"small"}
-            type={"danger"}
+            danger={true}
+            type={"primary"}
             onClick={() => removeBook(bookId)}>
           <DeleteOutlined />
         </Button>

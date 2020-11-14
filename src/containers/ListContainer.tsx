@@ -36,7 +36,7 @@ const ListContainer: React.FC = () => {
     if (books)
       return;
     dispatch(getBooksList());
-  })
+  }, [dispatch, books]);
   return (
       error
           ? <p style={{textAlign: "center"}}>에러 발생!...</p>

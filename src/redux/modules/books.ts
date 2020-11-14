@@ -117,15 +117,14 @@ function* editBookSaga(action: ReturnType<typeof editBook>) {
         action.payload.bookReq
     );
 
-    const editedBooksList = booksList.map(book =>
+    const editedBooksList = booksList.map((book) =>
       book.bookId === editBook.bookId ? editBook : book
     );
-
+    console.log(editedBooksList)
     yield put(booksAsync.success(editedBooksList));
     yield put(push('/'));
   }
   catch (error) {
-
     yield put(fail(new Error(error?.response?.data?.error || 'EDIT_BOOK_ERROR')));
   }
 }
