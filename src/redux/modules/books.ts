@@ -73,7 +73,7 @@ function* getBooksListSaga(action: ReturnType<typeof getBooksList>) {
 
     const token: string = yield select(getTokenFromState);
     const booksList: BookResType[] = yield call(BookService.getBooks, token);
-
+    console.log("들어옴");
     yield put(booksAsync.success(booksList));
   }
   catch (error) {

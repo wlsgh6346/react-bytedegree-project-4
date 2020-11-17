@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import { BookReqType, BookResType } from '../types';
 
 const BOOK_API_URL = 'https://api.marktube.tv/v1/book';

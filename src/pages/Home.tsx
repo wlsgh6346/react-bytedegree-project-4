@@ -5,7 +5,8 @@ import useToken from '../hooks/useToken';
 import ListContainer from '../containers/ListContainer';
 
 const Home: React.FC = () => {
-  const token = useToken();
+  const {token} = useToken();
+  console.log(token);
   if (token === null) {
     return <Redirect to="/signin" />;
   }

@@ -37,15 +37,15 @@ const ListContainer: React.FC = () => {
       return;
     dispatch(getBooksList());
   }, [dispatch, books]);
-  return (
-      error
-          ? <p style={{textAlign: "center"}}>에러 발생!...</p>
-          : <List books={books} loading={loading} goAdd={goAdd}
+
+  if (loading) return <div>로딩중...</div>;
+  if (error) return <div>에러 발생!</div>;
+  if (!books) return null;
+  return <List books={books} loading={loading} goAdd={goAdd}
                   editBook={editBook}
                   detailBook={detailBook}
                   removeBook={onRemove}
                   logout={logout} />
-          );
 };
 
 export default ListContainer;
