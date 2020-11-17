@@ -7,5 +7,5 @@ export default function useToken() {
     (state) => state.auth.token,
   );
 
-  return token;
+  return {token};
 }

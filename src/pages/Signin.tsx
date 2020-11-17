@@ -5,10 +5,11 @@ import useToken from '../hooks/useToken';
 import SigninContainer from '../containers/SigninContainer';
 
 const SigninPage = () => {
-  const token = useToken();
+  const {token} = useToken();
   if (token !== null) {
     return <Redirect to="/" />;
   }
+
   return <SigninContainer />;
 };
 
